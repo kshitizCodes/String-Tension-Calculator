@@ -74,7 +74,6 @@ public class UI extends JFrame implements ActionListener {
         gaugeFifth = new JComboBox<>(nameArr);
         gaugeSixth = new JComboBox<>(nameArr);
 
-
         typeInput.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -120,6 +119,7 @@ public class UI extends JFrame implements ActionListener {
         first.add(string1);
         first.add(scaleLengthFirst);
         first.add(pitchInputFirst);
+        first.add(gaugeFirst);
         frame.add(first);
 
         second = new JPanel();
@@ -131,6 +131,7 @@ public class UI extends JFrame implements ActionListener {
         second.add(string2);
         second.add(scaleLengthSecond);
         second.add(pitchInputSecond);
+        second.add(gaugeSecond);
         frame.add(second);
 
         third = new JPanel();
@@ -142,6 +143,7 @@ public class UI extends JFrame implements ActionListener {
         third.add(string3);
         third.add(scaleLengthThird);
         third.add(pitchInputThird);
+        third.add(gaugeThird);
         frame.add(third);
 
         fourth = new JPanel();
@@ -153,7 +155,9 @@ public class UI extends JFrame implements ActionListener {
         fourth.add(string4);
         fourth.add(scaleLengthFourth);
         fourth.add(pitchInputFourth);
+        fourth.add(gaugeFourth);
         frame.add(fourth);
+
         fifth = new JPanel();
         string5 = new JLabel("String 5");
         scaleLengthFifth = new JTextField(10);
@@ -163,7 +167,9 @@ public class UI extends JFrame implements ActionListener {
         fifth.add(string5);
         fifth.add(scaleLengthFifth);
         fifth.add(pitchInputFifth);
+        fifth.add(gaugeFifth);
         frame.add(fifth);
+
         sixth = new JPanel();
         string6 = new JLabel("String 6");
         scaleLengthSixth = new JTextField(10);
@@ -173,24 +179,17 @@ public class UI extends JFrame implements ActionListener {
         sixth.add(string6);
         sixth.add(scaleLengthSixth);
         sixth.add(pitchInputSixth);
+        sixth.add(gaugeSixth);
         frame.add(sixth);
+
         button = new JPanel();
         submit = new JButton("Submit");
         submit.addActionListener(this);
         button.add(submit);
         frame.add(button);
 
-        first.add(gaugeFirst);
-        second.add(gaugeSecond);
-        third.add(gaugeThird);
-        fourth.add(gaugeFourth);
-        fifth.add(gaugeFifth);
-        sixth.add(gaugeSixth);
-
         frame.requestFocusInWindow();
         frame.setVisible(true);
-
-
     }
 
     @Override
