@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class UI extends JFrame implements ActionListener {
@@ -30,13 +31,15 @@ public class UI extends JFrame implements ActionListener {
             "Bass - Chromes - Stainless Steel Flat Wound", "Bass - ProSteels - ProSteel Round Wound"
     };
 
+    ArrayList<String> names;
+    String[] nameArr;
+
     Database db = new Database();
     Connection conn = db.openConnection();
     Statement stmt = null;
     ResultSet rs;
 
     public UI() {
-
         frame = new JFrame();
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -50,12 +53,26 @@ public class UI extends JFrame implements ActionListener {
         type.add(typeInput);
         frame.add(type);
 
-        gaugeFirst = new JComboBox<>();
-        gaugeSecond = new JComboBox<>();
-        gaugeThird = new JComboBox<>();
-        gaugeFourth = new JComboBox<>();
-        gaugeFifth = new JComboBox<>();
-        gaugeSixth = new JComboBox<>();
+        names = new ArrayList<>();
+        try {
+            String type = Objects.requireNonNull(typeInput.getSelectedItem()).toString();
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT gauge FROM " + new StringType(type).getStringType());
+            while (rs.next()) {
+                names.add(rs.getString(1));
+            }
+            nameArr = new String[names.size()];
+            nameArr = names.toArray(nameArr);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        gaugeFirst = new JComboBox<>(nameArr);
+        gaugeSecond = new JComboBox<>(nameArr);
+        gaugeThird = new JComboBox<>(nameArr);
+        gaugeFourth = new JComboBox<>(nameArr);
+        gaugeFifth = new JComboBox<>(nameArr);
+        gaugeSixth = new JComboBox<>(nameArr);
 
 
         typeInput.addItemListener(new ItemListener() {
@@ -100,8 +117,6 @@ public class UI extends JFrame implements ActionListener {
         PromptSupport.setPrompt(" Scale length", scaleLengthFirst);
         pitchInputFirst = new JComboBox<>(arrPitch);
         pitchInputFirst.setSelectedIndex(0);
-
-//        PromptSupport.setPrompt(" String gauge", gaugeFirst);
         first.add(string1);
         first.add(scaleLengthFirst);
         first.add(pitchInputFirst);
@@ -113,12 +128,9 @@ public class UI extends JFrame implements ActionListener {
         PromptSupport.setPrompt(" Scale length", scaleLengthSecond);
         pitchInputSecond = new JComboBox<>(arrPitch);
         pitchInputSecond.setSelectedIndex(1);
-
-//        PromptSupport.setPrompt(" String gauge", gaugeSecond);
         second.add(string2);
         second.add(scaleLengthSecond);
         second.add(pitchInputSecond);
-
         frame.add(second);
 
         third = new JPanel();
@@ -127,8 +139,6 @@ public class UI extends JFrame implements ActionListener {
         PromptSupport.setPrompt(" Scale length", scaleLengthThird);
         pitchInputThird = new JComboBox<>(arrPitch);
         pitchInputThird.setSelectedIndex(2);
-
-//        PromptSupport.setPrompt(" String gauge", gaugeThird);
         third.add(string3);
         third.add(scaleLengthThird);
         third.add(pitchInputThird);
@@ -140,53 +150,47 @@ public class UI extends JFrame implements ActionListener {
         PromptSupport.setPrompt(" Scale length", scaleLengthFourth);
         pitchInputFourth = new JComboBox<>(arrPitch);
         pitchInputFourth.setSelectedIndex(3);
-//        PromptSupport.setPrompt(" String gauge", gaugeFourth);
         fourth.add(string4);
         fourth.add(scaleLengthFourth);
         fourth.add(pitchInputFourth);
         frame.add(fourth);
-
         fifth = new JPanel();
         string5 = new JLabel("String 5");
         scaleLengthFifth = new JTextField(10);
         PromptSupport.setPrompt(" Scale Length", scaleLengthFifth);
         pitchInputFifth = new JComboBox<>(arrPitch);
         pitchInputFifth.setSelectedIndex(4);
-//        PromptSupport.setPrompt(" String gauge", gaugeFifth);
         fifth.add(string5);
         fifth.add(scaleLengthFifth);
         fifth.add(pitchInputFifth);
         frame.add(fifth);
-
         sixth = new JPanel();
         string6 = new JLabel("String 6");
         scaleLengthSixth = new JTextField(10);
         PromptSupport.setPrompt(" Scale length", scaleLengthSixth);
         pitchInputSixth = new JComboBox<>(arrPitch);
         pitchInputSixth.setSelectedIndex(5);
-//        PromptSupport.setPrompt(" String gauge", gaugeSixth);
         sixth.add(string6);
         sixth.add(scaleLengthSixth);
         sixth.add(pitchInputSixth);
-
         frame.add(sixth);
-
         button = new JPanel();
         submit = new JButton("Submit");
         submit.addActionListener(this);
         button.add(submit);
         frame.add(button);
 
-        first.setLocation(20, 100);
-        second.setLocation(20, 150);
-        third.setLocation(20, 200);
-        fourth.setLocation(20, 250);
-        fifth.setLocation(20, 300);
-        sixth.setLocation(20, 350);
-        button.setLocation(20, 400);
+        first.add(gaugeFirst);
+        second.add(gaugeSecond);
+        third.add(gaugeThird);
+        fourth.add(gaugeFourth);
+        fifth.add(gaugeFifth);
+        sixth.add(gaugeSixth);
 
         frame.requestFocusInWindow();
         frame.setVisible(true);
+
+
     }
 
     @Override
